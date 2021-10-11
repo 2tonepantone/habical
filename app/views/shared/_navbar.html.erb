@@ -4,6 +4,30 @@
       <i class="far fa-calendar-check"></i>
       HabiCal
     </a>
-    <a href="#" class="btn btn-outline-primary btn-sm">Login</a>
+    <% if user_signed_in? %>
+      <div class="nav-item dropdown">
+        <a class="nav-link pl-1 pr-1" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-bars"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+          <% if user_signed_in? %>
+            <% username = current_user.email.split('@')[0] %>
+            <div class="d-flex dropdown-item disabled mb-1 align-items-center align-content-center text-center">
+              <p class="mb-0 ml-2">Welcome, <%= username %>!</p>
+            </div>
+            <div class="dropdown-divider"></div>
+            <%= link_to edit_user_registration_path do %>
+              <p class="dropdown-item">Update my profile</p>
+            <% end %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
+          <% else %>
+            <%= link_to "Login", new_user_session_path, class: "nav-link" %>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <%= link_to "Login", new_user_session_path, class: "btn btn-outline-primary btn-sm" %>
+    <% end %>
   </div>
 </nav>
