@@ -1,0 +1,8 @@
+<%= week_calendar do |date| %>
+  <span class="date-str"><%= date.day %></span>
+  <div class="row">
+    <% (1..24).each do |h|%>
+      <label><%= h%></label>
+    <% end %>
+  </div>
+<% end %>
