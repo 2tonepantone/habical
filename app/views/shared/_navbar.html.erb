@@ -11,15 +11,13 @@
         </a>
         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
           <% if user_signed_in? %>
-            <% username = current_user.email.split('@')[0] %>
-            <div class="d-flex dropdown-item disabled mb-1 align-items-center align-content-center text-center">
-              <p class="mb-0 ml-2">Welcome, <%= username %>!</p>
+            <% username = current_user.email.split('@')[0].capitalize %>
+            <div class="dropdown-item disabled">
+              <span>Welcome, <%= username %>!</span>
             </div>
-            <div class="dropdown-divider"></div>
-            <%= link_to edit_user_registration_path do %>
-              <p class="dropdown-item">Update my profile</p>
-            <% end %>
-            <div class="dropdown-divider"></div>
+            <li><hr class="dropdown-divider"></li>
+            <%= link_to "Profile", edit_user_registration_path , class: "dropdown-item" %>
+            <li><hr class="dropdown-divider"></li>
             <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
           <% else %>
             <%= link_to "Login", new_user_session_path, class: "nav-link" %>
