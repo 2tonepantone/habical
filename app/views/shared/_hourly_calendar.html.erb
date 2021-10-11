@@ -1,8 +1,8 @@
-<%= week_calendar do |date| %>
-  <span class="date-str"><%= date.day %></span>
+<%= week_calendar do %>
+  <span class="date-str"></span>
   <div class="row">
-    <% (1..24).each do |h|%>
-      <label><%= h%></label>
+    <% (9..18).each do |h|%>
+      <label><%= h%>:00</label>
     <% end %>
   </div>
 <% end %>
