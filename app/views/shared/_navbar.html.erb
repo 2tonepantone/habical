@@ -1,12 +1,14 @@
 <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
+    <div class="navbar-brand">
+      <%= link_to "", :root, class:'brand-link' %>
       <i class="far fa-calendar-check"></i>
       HabiCal
-    </a>
+    </div>
     <% if user_signed_in? %>
       <div class="nav-item dropdown">
-        <a class="nav-link pl-1 pr-1" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link px-1" href="#" id="navbarDropdown" role="button"
+        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-bars"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
