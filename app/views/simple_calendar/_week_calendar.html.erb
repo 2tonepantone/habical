@@ -20,7 +20,7 @@
       </tr>
     </thead>
     <tbody>
-      <% (9..18).each do |hour| %>
+      <% (available_hours ||= 9..18).each do |hour| %>
         <tr>
           <th class="text-muted small"><%= hour %>:00</th>
           <% date_range.each_slice(7) do |week| %>
