@@ -11,9 +11,13 @@
     <% end %>
   </div>
   <table class="table table-striped">
+    <colgroup>
+      <col span="1" class="time">
+      <col span="7" class="days">
+    </colgroup>
     <thead>
       <tr>
-        <th></th>
+        <th scope="col"> </th>
         <% date_range.slice(0, 7).each do |day| %>
           <th><%= t('date.abbr_day_names')[day.wday] %></th>
         <% end %>
@@ -22,7 +26,7 @@
     <tbody>
       <% (available_hours ||= 9..18).each do |hour| %>
         <tr>
-          <th class="text-muted small"><%= hour %>:00</th>
+          <th scope="row" class="text-muted small"><%= hour %>:00</th>
           <% date_range.each_slice(7) do |week| %>
             <% week.each do |day| %>
               <%= content_tag :td, class: calendar.td_classes_for(day) do %>
