@@ -10,7 +10,8 @@
         <p class="lead text-muted">
           Let us worry about scheduling while you go out and accomplish new things.
         </p>
-        <a href="#" class="btn btn-outline-primary">Get started now</a>
+        <%= link_to "Get started now", user_google_oauth2_omniauth_authorize_path,
+            method: :post, class: "btn btn-outline-primary" %>
       </p>
     </div>
   </div>
