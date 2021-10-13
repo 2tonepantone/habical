@@ -30,6 +30,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 ## Added gems
 gem 'devise'
+gem 'dotenv-rails', groups: [:development, :test]
 gem 'font-awesome-sass', '~> 5.15.1'
 gem 'omniauth-google-oauth2'
 gem 'simple_calendar', '~> 2.4'
