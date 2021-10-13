@@ -31,6 +31,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 ## Added gems
 gem 'devise'
 gem 'font-awesome-sass', '~> 5.15.1'
+gem 'omniauth-google-oauth2'
 gem 'simple_calendar', '~> 2.4'
 
 group :development, :test do
