@@ -12,22 +12,18 @@
           <i class="fas fa-bars"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-          <% if user_signed_in? %>
-            <% username = current_user.email.split('@')[0].capitalize %>
-            <div class="dropdown-item disabled">
-              <span>Welcome, <%= username %>!</span>
-            </div>
-            <li><hr class="dropdown-divider"></li>
-            <%= link_to "Profile", edit_user_registration_path , class: "dropdown-item" %>
-            <li><hr class="dropdown-divider"></li>
-            <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
-          <% else %>
-            <%= link_to "Login", new_user_session_path, class: "nav-link" %>
-          <% end %>
+          <% username = current_user.email.split('@')[0].capitalize %>
+          <div class="dropdown-item disabled">
+            <span>Welcome, <%= username %>!</span>
+          </div>
+          <li><hr class="dropdown-divider"></li>
+          <%= link_to "Profile", edit_user_registration_path , class: "dropdown-item" %>
+          <li><hr class="dropdown-divider"></li>
+          <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
         </div>
       </div>
     <% else %>
-      <%= link_to "Login", new_user_session_path, class: "btn btn-outline-primary btn-sm" %>
+      <%= link_to "Login", user_google_oauth2_omniauth_authorize_path, class: "btn btn-outline-primary btn-sm" %>
     <% end %>
   </div>
 </nav>
