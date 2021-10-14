@@ -15,7 +15,7 @@ class TasksController < ApplicationController
     event = get_event task
     client.insert_event('primary', event)
     flash[:notice] = 'Task was successfully added.'
-    redirect_to tasks_path
+    redirect_to :root
   end
 
   def get_google_calendar_client(current_user)
