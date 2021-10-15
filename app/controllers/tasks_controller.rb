@@ -15,6 +15,9 @@ class TasksController < ApplicationController
     event = get_event task
     client.insert_event('primary', event)
     flash[:notice] = 'Task was successfully added.'
+    events = get_calendar_events(current_user)
+    p "Here is events"
+    p events
     redirect_to :root
   end
 
@@ -47,6 +50,43 @@ class TasksController < ApplicationController
       redirect_to :back
     end
     client
+  end
+
+  def get_calendar_events(current_user)
+    calendar = Google::Apis::CalendarV3::CalendarService.new
+
+    return unless current_user.present? && current_user.access_token.present? && current_user.refresh_token.present?
+
+    secrets = Google::APIClient::ClientSecrets.new({
+                                                     'web' => {
+                                                       'access_token' => current_user.access_token,
+                                                       'refresh_token' => current_user.refresh_token,
+                                                       'client_id' => ENV['GOOGLE_API_KEY'],
+                                                       'client_secret' => ENV['GOOGLE_API_SECRET']
+                                                     }
+                                                   })
+    begin
+      calendar.authorization = secrets.to_authorization
+      calendar.authorization.grant_type = 'refresh_token'
+
+      unless current_user.present?
+        calendar.authorization.refresh!
+        current_user.update_attributes(
+          access_token: calendar.authorization.access_token,
+          refresh_token: calendar.authorization.refresh_token,
+          expires_at: calendar.authorization.expires_at.to_i
+        )
+      end
+    rescue StandardError => e
+      flash[:error] = 'Your token has been expired. Please login again with google.'
+      redirect_to :back
+    end
+    @result = calendar.list_events(CALENDAR_ID,
+                                   max_results: 10,
+                                   single_events: true,
+                                   order_by: 'startTime',
+                                   time_min: Time.now.iso8601)
+    @result
   end
 
   private
