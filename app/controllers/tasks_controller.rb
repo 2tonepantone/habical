@@ -11,6 +11,16 @@ class TasksController < ApplicationController
                                  single_events: true,
                                  order_by: 'startTime',
                                  time_min: Time.now.iso8601)
+    body = Google::Apis::CalendarV3::FreeBusyRequest.new
+    body.items = [{ "id": 'primary' }]
+    body.time_min = Time.now.iso8601
+    body.time_max = (Time.now + 7 * 86_400).iso8601
+
+    service = Google::Apis::CalendarV3::CalendarService.new
+    service.authorization = client.authorization
+    @response = service.query_freebusy(body)
+    p "heres the response"
+    @busy_times = @response.calendars['primary'].busy
   end
 
   # GET /tasks/new
