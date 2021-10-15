@@ -16,4 +16,21 @@
       <% end %>
     </tbody>
   </table>
+  <h5>Busy Times</h5>
+  <table class="">
+    <thead>
+      <tr>
+        <th class="">Start Time</th>
+        <th class="">End Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @busy_times.each do |event| %>
+        <tr>
+          <td class=""><%= event.start %></td>
+          <td class=""><%= event.end %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </section>
