@@ -12,7 +12,7 @@ class TasksController < ApplicationController
                                  order_by: 'startTime',
                                  time_min: Time.now.iso8601)
     body = Google::Apis::CalendarV3::FreeBusyRequest.new
-    body.items = [{ "id": 'primary' }]
+    body.items = ["id": 'primary']
     body.time_min = Time.now.iso8601
     body.time_max = (Time.now + 7 * 86_400).iso8601
 
