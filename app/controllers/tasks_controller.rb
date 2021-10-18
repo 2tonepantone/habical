@@ -5,22 +5,8 @@ class TasksController < ApplicationController
   CALENDAR_ID = 'primary'.freeze
 
   def index
-    client = get_google_calendar_client current_user
-    @result = client.list_events(CALENDAR_ID,
-                                 max_results: 10,
-                                 single_events: true,
-                                 order_by: 'startTime',
-                                 time_min: Time.now.iso8601)
-    body = Google::Apis::CalendarV3::FreeBusyRequest.new
-    body.items = ["id": 'primary']
-    body.time_min = Time.now.iso8601
-    body.time_max = (Time.now + 7 * 86_400).iso8601
-
-    service = Google::Apis::CalendarV3::CalendarService.new
-    service.authorization = client.authorization
-    @response = service.query_freebusy(body)
-    p "heres the response"
-    @busy_times = @response.calendars['primary'].busy
+    @busy_times = get_busy_times
+    @events = get_calendar_events
   end
 
   # GET /tasks/new
@@ -29,13 +15,15 @@ class TasksController < ApplicationController
   end
 
   def create
-    client = get_google_calendar_client current_user
+    client = get_google_calendar_client(current_user)
     task = params[:task]
-    event = get_event task
+    event = get_event(task)
     client.insert_event('primary', event)
     flash[:notice] = 'Task was successfully added.'
     redirect_to tasks_path
   end
+
+  private
 
   def get_google_calendar_client(current_user)
     client = Google::Apis::CalendarV3::CalendarService.new
@@ -67,8 +55,6 @@ class TasksController < ApplicationController
     end
     client
   end
-
-  private
 
   def get_event(task)
     attendees = task[:members].split(',').map { |t| { email: t.strip } }
@@ -109,5 +95,27 @@ class TasksController < ApplicationController
                                                     ]
                                                   }, 'primary': true
                                                 })
+  end
+
+  def get_busy_times
+    client = get_google_calendar_client(current_user)
+    body = Google::Apis::CalendarV3::FreeBusyRequest.new
+    body.items = ["id": 'primary']
+    body.time_min = Time.now.iso8601
+    body.time_max = (Time.now + 7 * 86_400).iso8601
+
+    service = Google::Apis::CalendarV3::CalendarService.new
+    service.authorization = client.authorization
+    @response = service.query_freebusy(body)
+    @busy_times = @response.calendars['primary'].busy
+  end
+
+  def get_calendar_events
+    client = get_google_calendar_client(current_user)
+    @events = client.list_events(CALENDAR_ID,
+                                 max_results: 10,
+                                 single_events: true,
+                                 order_by: 'startTime',
+                                 time_min: Time.now.iso8601)
   end
 end

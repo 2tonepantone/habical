@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @result.items.each do |event| %>
+      <% @events.items.each do |event| %>
         <tr>
           <td class=""><%= event.start.date_time || event.start.date %></td>
           <td class=""><%= event.summary %></td>
@@ -25,10 +25,10 @@
       </tr>
     </thead>
     <tbody>
-      <% @busy_times.each do |event| %>
+      <% @busy_times.each do |time| %>
         <tr>
-          <td class=""><%= event.start %></td>
-          <td class=""><%= event.end %></td>
+          <td class=""><%= time.start %></td>
+          <td class=""><%= time.end %></td>
         </tr>
       <% end %>
     </tbody>
