@@ -2,7 +2,7 @@ require 'google/apis/calendar_v3'
 require 'google/api_client/client_secrets'
 
 class TasksController < ApplicationController
-  CALENDAR_ID = 'primary'
+  CALENDAR_ID = 'primary'.freeze
 
   def index
     client = get_google_calendar_client current_user
