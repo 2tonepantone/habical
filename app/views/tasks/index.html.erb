@@ -33,4 +33,21 @@
       <% end %>
     </tbody>
   </table>
+  <h5>Your Tasks</h5>
+  <table class="">
+    <thead>
+      <tr>
+        <th class="">Task Name</th>
+        <th class="">Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tasks.each do |task| %>
+        <tr>
+          <td class=""><%= task.title %></td>
+          <td class=""><%= task.duration %> hours</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </section>

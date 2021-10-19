@@ -17,11 +17,9 @@ ActiveRecord::Schema.define(version: 2021_10_13_071926) do
 
   create_table "tasks", force: :cascade do |t|
     t.string "title"
-    t.string "description"
+    t.float "duration"
     t.datetime "start_date"
     t.datetime "end_date"
-    t.string "event"
-    t.string "members"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
