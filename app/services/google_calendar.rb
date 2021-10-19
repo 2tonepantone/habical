@@ -18,42 +18,38 @@ class GoogleCalendar
   end
 
   def add_event(task)
-    attendees = task[:members].split(',').map { |t| { email: t.strip } }
-    event = Google::Apis::CalendarV3::Event.new({
-                                                  summary: task[:title],
-                                                  location: '800 Howard St., San Francisco, CA 94103',
-                                                  description: task[:description],
-                                                  start: {
-                                                    date_time: Time.new(task['start_date(1i)'], task['start_date(2i)'], task['start_date(3i)'], task['start_date(4i)'],
-                                                                        task['start_date(5i)']).to_datetime.rfc3339,
-                                                    time_zone: 'Asia/Kolkata'
-                                                  },
-                                                  end: {
-                                                    date_time: Time.new(task['end_date(1i)'], task['end_date(2i)'], task['end_date(3i)'], task['end_date(4i)'],
-                                                                        task['end_date(5i)']).to_datetime.rfc3339,
-                                                    time_zone: 'Asia/Kolkata'
-                                                  },
-                                                  attendees: attendees,
-                                                  reminders: {
-                                                    use_default: false,
-                                                    overrides: [
-                                                      Google::Apis::CalendarV3::EventReminder.new(
-                                                        reminder_method: 'popup', minutes: 10
-                                                      ),
-                                                      Google::Apis::CalendarV3::EventReminder.new(
-                                                        reminder_method: 'email', minutes: 20
-                                                      )
-                                                    ]
-                                                  },
-                                                  notification_settings: {
-                                                    notifications: [
-                                                      { type: 'event_creation', method: 'email' },
-                                                      { type: 'event_change', method: 'email' },
-                                                      { type: 'event_cancellation', method: 'email' },
-                                                      { type: 'event_response', method: 'email' }
-                                                    ]
-                                                  }, 'primary': true
-                                                })
+    event = Google::Apis::CalendarV3::Event.new(
+      {
+        summary: task[:title],
+        start: {
+          date_time: Time.new(task['start_date(1i)'], task['start_date(2i)'], task['start_date(3i)'], task['start_date(4i)'],
+                              task['start_date(5i)']).to_datetime.rfc3339
+        },
+        end: {
+          date_time: Time.new(task['end_date(1i)'], task['end_date(2i)'], task['end_date(3i)'], task['end_date(4i)'],
+                              task['end_date(5i)']).to_datetime.rfc3339
+        },
+        reminders: {
+          use_default: false,
+          overrides: [
+            Google::Apis::CalendarV3::EventReminder.new(
+              reminder_method: 'popup', minutes: 10
+            ),
+            Google::Apis::CalendarV3::EventReminder.new(
+              reminder_method: 'email', minutes: 20
+            )
+          ]
+        },
+        notification_settings: {
+          notifications: [
+            { type: 'event_creation', method: 'email' },
+            { type: 'event_change', method: 'email' },
+            { type: 'event_cancellation', method: 'email' },
+            { type: 'event_response', method: 'email' }
+          ]
+        }, 'primary': true
+      }
+    )
     @client.insert_event('primary', event)
   end
 
