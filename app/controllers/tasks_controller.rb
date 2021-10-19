@@ -5,6 +5,7 @@ class TasksController < ApplicationController
   def index
     @events = @schedule[:calendar_events]
     @busy_times = @schedule[:busy_times]
+    @tasks = Task.all
   end
 
   def new
