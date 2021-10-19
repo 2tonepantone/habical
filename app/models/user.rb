@@ -5,6 +5,11 @@ class User < ApplicationRecord
   has_one :schedule
   has_many :tasks
 
+  def initialize
+    super
+    @schedule = Schedule.new
+  end
+
   def self.from_omniauth(access_token)
     data = access_token.info
     user = User.where(:email => data["email"]).first
