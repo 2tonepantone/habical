@@ -10,11 +10,7 @@ class GoogleCalendar
   end
 
   def call
-    {
-      client: @client,
-      busy_times: fetch_busy_times,
-      calendar_events: fetch_calendar_events
-    }
+    { busy_times: fetch_busy_times, calendar_events: fetch_calendar_events }
   end
 
   def add_event(task)
