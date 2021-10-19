@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2021_10_13_071926) do
 
   create_table "tasks", force: :cascade do |t|
     t.string "title"
-    t.integer "duration"
+    t.float "duration"
     t.datetime "start_date"
     t.datetime "end_date"
     t.bigint "user_id"
