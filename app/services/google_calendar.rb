@@ -11,7 +11,7 @@ class GoogleCalendar
 
   def call
     {
-      client: fetch_google_calendar_client,
+      client: @client,
       busy_times: fetch_busy_times,
       calendar_events: fetch_calendar_events
     }
@@ -87,21 +87,19 @@ class GoogleCalendar
   end
 
   def fetch_busy_times
-    client = fetch_google_calendar_client
     body = Google::Apis::CalendarV3::FreeBusyRequest.new
     body.items = ["id": 'primary']
     body.time_min = Time.now.iso8601
     body.time_max = (Time.now + 7 * 86_400).iso8601
 
     service = Google::Apis::CalendarV3::CalendarService.new
-    service.authorization = client.authorization
+    service.authorization = @client.authorization
     @response = service.query_freebusy(body)
     @busy_times = @response.calendars['primary'].busy
   end
 
   def fetch_calendar_events
-    client = fetch_google_calendar_client
-    @events = client.list_events(CALENDAR_ID,
+    @events = @client.list_events(CALENDAR_ID,
                                  max_results: 10,
                                  single_events: true,
                                  order_by: 'startTime',
