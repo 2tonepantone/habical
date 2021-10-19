@@ -12,6 +12,8 @@ class TasksController < ApplicationController
   end
 
   def create
+    @task = Task.new(task_params)
+    @task.save
     task = params[:task]
     @gcal.add_event(task)
     flash[:notice] = 'Task was successfully added.'
@@ -26,5 +28,9 @@ class TasksController < ApplicationController
 
   def fetch_schedule
     @schedule = @gcal.call
+  end
+
+  def task_params
+    params.require(:task).permit
   end
 end
