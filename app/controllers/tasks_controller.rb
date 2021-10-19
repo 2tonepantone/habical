@@ -15,11 +15,16 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @task.user_id = current_user.id
-    @task.save!
-    task = params[:task]
-    @gcal.add_event(task)
-    flash[:notice] = 'Task was successfully added.'
-    redirect_to tasks_path
+    if @task.save
+      task = params[:task]
+      @gcal.add_event(task)
+      flash[:notice] = 'Task was successfully added.'
+      redirect_to tasks_path
+    else
+      redirect_to new_task_path(@task), alert: "
+        Cannot add task. #{@task.errors.full_messages.join(', ')}.
+      "
+    end
   end
 
   private
