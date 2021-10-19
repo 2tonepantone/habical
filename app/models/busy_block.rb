@@ -1,0 +1,2 @@
+class BusyBlock < ApplicationRecord
+end
