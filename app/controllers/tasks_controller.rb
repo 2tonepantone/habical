@@ -13,7 +13,8 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
-    @task.save
+    @task.user_id = current_user.id
+    @task.save!
     task = params[:task]
     @gcal.add_event(task)
     flash[:notice] = 'Task was successfully added.'
@@ -31,6 +32,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit
+    params.require(:task).permit(:title, :duration)
   end
 end
