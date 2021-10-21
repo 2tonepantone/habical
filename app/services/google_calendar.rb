@@ -13,6 +13,20 @@ class GoogleCalendar
     { busy_times: fetch_busy_times, calendar_events: fetch_calendar_events }
   end
 
+  def get_free_time_slot(task_duration)
+    busy_times = fetch_busy_times
+    busy_times.each_with_index do |busy_time, index|
+      next unless index < busy_times.length - 1
+
+      # Ten minute buffer between events
+      buffer = 10
+      start_time = busy_time.end.advance(minutes: buffer)
+      end_time = busy_times[index.next].start.advance(minutes: -buffer - task_duration)
+      # Check that the task can fit in the alloted time slot
+      return [start_time, start_time.advance(minutes: task_duration)] if start_time <= end_time
+    end
+  end
+
   def add_event(task)
     event = Google::Apis::CalendarV3::Event.new(
       {
@@ -90,15 +104,15 @@ class GoogleCalendar
 
     service = Google::Apis::CalendarV3::CalendarService.new
     service.authorization = @client.authorization
-    @response = service.query_freebusy(body)
-    @busy_times = @response.calendars['primary'].busy
+    response = service.query_freebusy(body)
+    response.calendars['primary'].busy
   end
 
   def fetch_calendar_events
     @events = @client.list_events(CALENDAR_ID,
-                                 max_results: 10,
-                                 single_events: true,
-                                 order_by: 'startTime',
-                                 time_min: Time.now.iso8601)
+                                  max_results: 10,
+                                  single_events: true,
+                                  order_by: 'startTime',
+                                  time_min: Time.now.iso8601)
   end
 end
