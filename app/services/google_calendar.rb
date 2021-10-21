@@ -13,31 +13,16 @@ class GoogleCalendar
     { busy_times: fetch_busy_times, calendar_events: fetch_calendar_events }
   end
 
-  def get_free_time_slot(task_duration)
-    busy_times = fetch_busy_times
-    busy_times.each_with_index do |busy_time, index|
-      next unless index < busy_times.length - 1
-
-      # Ten minute buffer between events
-      buffer = 10
-      start_time = busy_time.end.advance(minutes: buffer)
-      end_time = busy_times[index.next].start.advance(minutes: -buffer - task_duration)
-      # Check that the task can fit in the alloted time slot
-      return [start_time, start_time.advance(minutes: task_duration)] if start_time <= end_time
-    end
-  end
-
   def add_event(task)
+    free_slot = get_free_time_slot(task[:duration].to_i)
     event = Google::Apis::CalendarV3::Event.new(
       {
         summary: task[:title],
         start: {
-          date_time: Time.new(task['start_date(1i)'], task['start_date(2i)'], task['start_date(3i)'], task['start_date(4i)'],
-                              task['start_date(5i)']).to_datetime.rfc3339
+          date_time: free_slot[:start].rfc3339
         },
         end: {
-          date_time: Time.new(task['end_date(1i)'], task['end_date(2i)'], task['end_date(3i)'], task['end_date(4i)'],
-                              task['end_date(5i)']).to_datetime.rfc3339
+          date_time: free_slot[:end].rfc3339
         },
         reminders: {
           use_default: false,
@@ -106,6 +91,20 @@ class GoogleCalendar
     service.authorization = @client.authorization
     response = service.query_freebusy(body)
     response.calendars['primary'].busy
+  end
+
+  def get_free_time_slot(task_duration)
+    busy_times = fetch_busy_times
+    busy_times.each_with_index do |busy_time, index|
+      next unless index < busy_times.length - 1
+
+      # Ten minute buffer between events
+      buffer = 10
+      start_time = busy_time.end.advance(minutes: buffer)
+      end_time = busy_times[index.next].start.advance(minutes: -buffer - task_duration)
+      # Check that the task can fit in the alloted time slot
+      return { start: start_time, end: start_time.advance(minutes: task_duration) } if start_time <= end_time
+    end
   end
 
   def fetch_calendar_events
