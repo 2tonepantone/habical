@@ -99,8 +99,7 @@ class GoogleCalendar
     return { start: (Time.now + 3600), end: (Time.now + 3600 + (task_duration * 60)) } if busy_times.empty?
 
     busy_times.each_with_index do |busy_time, index|
-      ##### WE STILL CAN'T ADD EVENTS BEFORE BUSY EVENTS.
-      slot_start = get_slot_start(busy_time, buffer)
+      slot_start = get_slot_start(busy_time, buffer, task_duration, index)
       next_index = busy_times[index.next] ? index.next : index
       # If last event use that event's end (slot_start) to schedule the next event
       slot_end = if next_index == index
@@ -116,8 +115,12 @@ class GoogleCalendar
     end
   end
 
-  def get_slot_start(busy_time, buffer)
-    busy_time.end.advance(minutes: buffer)
+  def get_slot_start(busy_time, buffer, task_duration, index)
+    if DateTime.current.advance(minutes: 60 + task_duration) < busy_time.start && index.zero?
+      DateTime.current.advance(minutes: 60)
+    else
+      busy_time.end.advance(minutes: buffer)
+    end
   end
 
   def get_slot_end(busy_time, buffer, task_duration)
