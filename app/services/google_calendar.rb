@@ -93,27 +93,35 @@ class GoogleCalendar
     response.calendars['primary'].busy
   end
 
-  def get_free_time_slot(task_duration)
+  def get_free_time_slot(task_duration, buffer = 10)
     busy_times = fetch_busy_times
     # If no busy times, add task one hour from now
     return { start: (Time.now + 3600), end: (Time.now + 3600 + (task_duration * 60)) } if busy_times.empty?
 
     busy_times.each_with_index do |busy_time, index|
-      next unless index < busy_times.length
-
-      # Ten minute buffer between events
-      buffer = 10
-      start_time = busy_time.end.advance(minutes: buffer)
+      ##### WE STILL CAN'T ADD EVENTS BEFORE BUSY EVENTS.
+      slot_start = get_slot_start(busy_time, buffer)
       next_index = busy_times[index.next] ? index.next : index
-      # If only one busy event use that event's end to schedule the next event
-      end_time = if next_index == index
-                   start_time.advance(minutes: task_duration)
+      # If only one busy event use that event's end (slot_start) to schedule the next event
+      slot_end = if next_index == index
+                   slot_start.advance(minutes: task_duration)
                  else
-                   busy_times[next_index].start.advance(minutes: -buffer - task_duration)
+                   get_slot_end(busy_times[next_index], buffer, task_duration)
                  end
       # Check that the task can fit in the alloted time slot
-      return { start: start_time, end: start_time.advance(minutes: task_duration) } if start_time <= end_time
+      if slot_start <= slot_end
+        return { start: slot_start,
+                 end: slot_start.advance(minutes: task_duration) }
+      end
     end
+  end
+
+  def get_slot_start(busy_time, buffer)
+    busy_time.end.advance(minutes: buffer)
+  end
+
+  def get_slot_end(busy_time, buffer, task_duration)
+    busy_time.start.advance(minutes: -buffer - task_duration)
   end
 
   def fetch_calendar_events
