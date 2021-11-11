@@ -95,6 +95,9 @@ class GoogleCalendar
 
   def get_free_time_slot(task_duration)
     busy_times = fetch_busy_times
+    # If no busy times, add task one hour from now
+    return { start: (Time.now + 3600), end: (Time.now + 3600 + (task_duration * 60)) } if busy_times.empty?
+
     busy_times.each_with_index do |busy_time, index|
       next unless index < busy_times.length - 1
 
