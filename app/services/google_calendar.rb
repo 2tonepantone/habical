@@ -99,12 +99,18 @@ class GoogleCalendar
     return { start: (Time.now + 3600), end: (Time.now + 3600 + (task_duration * 60)) } if busy_times.empty?
 
     busy_times.each_with_index do |busy_time, index|
-      next unless index < busy_times.length - 1
+      next unless index < busy_times.length
 
       # Ten minute buffer between events
       buffer = 10
       start_time = busy_time.end.advance(minutes: buffer)
-      end_time = busy_times[index.next].start.advance(minutes: -buffer - task_duration)
+      next_index = busy_times[index.next] ? index.next : index
+      # If only one busy event use that event's end to schedule the next event
+      end_time = if next_index == index
+                   start_time.advance(minutes: task_duration)
+                 else
+                   busy_times[next_index].start.advance(minutes: -buffer - task_duration)
+                 end
       # Check that the task can fit in the alloted time slot
       return { start: start_time, end: start_time.advance(minutes: task_duration) } if start_time <= end_time
     end
