@@ -102,7 +102,7 @@ class GoogleCalendar
       ##### WE STILL CAN'T ADD EVENTS BEFORE BUSY EVENTS.
       slot_start = get_slot_start(busy_time, buffer)
       next_index = busy_times[index.next] ? index.next : index
-      # If only one busy event use that event's end (slot_start) to schedule the next event
+      # If last event use that event's end (slot_start) to schedule the next event
       slot_end = if next_index == index
                    slot_start.advance(minutes: task_duration)
                  else
