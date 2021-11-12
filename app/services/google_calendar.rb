@@ -127,9 +127,10 @@ class GoogleCalendar
 
   def get_slot_start(busy_times, busy_time, buffer, task_duration)
     is_first_busy_slot = busy_time == busy_times.first
-    one_hour_from_now = DateTime.current.advance(minutes: 60)
-    if is_first_busy_slot && busy_time.start.today? && one_hour_from_now.advance(minutes: task_duration) < busy_time.start
-      one_hour_from_now
+    start_time = busy_time.start.today? ? DateTime.current.advance(hours: 1) : busy_time.start.localtime.change(hour: 10)
+    # Can't I theoretically get both start and end time here using start_time.advance(minutes: task_duration)?
+    if is_first_busy_slot && start_time.advance(minutes: task_duration) < busy_time.start
+      start_time
     else
       busy_time.end.advance(minutes: buffer)
     end
