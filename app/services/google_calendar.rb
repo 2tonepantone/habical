@@ -15,7 +15,14 @@ class GoogleCalendar
 
   def add_event(task)
     free_slot = get_free_time_slot(task[:duration].to_i)
-    event = Google::Apis::CalendarV3::Event.new(
+    event = get_event(task, free_slot)
+    @client.insert_event('primary', event)
+  end
+
+  private
+
+  def get_event(task, free_slot)
+    Google::Apis::CalendarV3::Event.new(
       {
         summary: task[:title],
         start: {
@@ -45,10 +52,7 @@ class GoogleCalendar
         }, 'primary': true
       }
     )
-    @client.insert_event('primary', event)
   end
-
-  private
 
   def fetch_google_calendar_client
     client = Google::Apis::CalendarV3::CalendarService.new
