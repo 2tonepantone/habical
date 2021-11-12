@@ -100,21 +100,28 @@ class GoogleCalendar
   def get_free_time_slot(task_duration, buffer = 10, day_start = 9, day_end = 21)
     day_start = Time.now.change(hour: day_start)
     day_end = Time.now.change(hour: day_end)
-    busy_times = fetch_busy_times(day_start.iso8601, day_end.iso8601)
-    # If no busy times, add task one hour from now
-    if busy_times.empty?
-      return { start: Time.now.advance(hours: 1),
-               end: Time.now.advance(minutes: 60 + task_duration) }
-    end
+    searching = true
+    while searching
+      busy_times = fetch_busy_times(day_start.iso8601, day_end.iso8601)
+      if busy_times.empty?
+        searching = false
+        return handle_empty_schedule(day_start, task_duration)
+      end
 
-    busy_times.each_with_index do |busy_time, index|
-      slot_start = get_slot_start(busy_times, busy_time, buffer, task_duration)
-      slot_end = get_slot_end(busy_times, buffer, task_duration, slot_start, index)
-      # Check that the task can fit in the alloted time slot and that it would be scheduled within the set active period
-      if slot_start <= slot_end && slot_start.localtime >= day_start && slot_start.advance(minutes: task_duration).localtime <= day_end
+      busy_times.each_with_index do |busy_time, index|
+        slot_start = get_slot_start(busy_times, busy_time, buffer, task_duration)
+        slot_end = get_slot_end(busy_times, buffer, task_duration, slot_start, index)
+        # Check that the task can fit in the alloted time slot and that it would be scheduled within the set active period
+        unless slot_start <= slot_end && slot_start.localtime >= day_start && slot_start.advance(minutes: task_duration).localtime <= day_end
+          next
+        end
+
+        searching = false
         return { start: slot_start,
                  end: slot_start.advance(minutes: task_duration) }
       end
+      day_start = day_start.advance(days: 1)
+      day_end = day_end.advance(days: 1)
     end
   end
 
@@ -134,6 +141,17 @@ class GoogleCalendar
     return slot_start.advance(minutes: task_duration) if next_index == index
 
     busy_times[next_index].start.advance(minutes: -buffer - task_duration)
+  end
+
+  def handle_empty_schedule(day_start, task_duration)
+    # If no busy times, add task one hour from now or the day start
+    if day_start.today?
+      { start: Time.now.advance(hours: 1),
+        end: Time.now.advance(minutes: 60 + task_duration) }
+    else
+      { start: day_start.advance(hours: 1),
+        end: day_start.advance(minutes: 60 + task_duration) }
+    end
   end
 
   def fetch_calendar_events
