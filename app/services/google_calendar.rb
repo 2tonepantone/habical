@@ -15,7 +15,14 @@ class GoogleCalendar
 
   def add_event(task)
     free_slot = get_free_time_slot(task[:duration].to_i)
-    event = Google::Apis::CalendarV3::Event.new(
+    event = get_event(task, free_slot)
+    @client.insert_event('primary', event)
+  end
+
+  private
+
+  def get_event(task, free_slot)
+    Google::Apis::CalendarV3::Event.new(
       {
         summary: task[:title],
         start: {
@@ -45,10 +52,7 @@ class GoogleCalendar
         }, 'primary': true
       }
     )
-    @client.insert_event('primary', event)
   end
-
-  private
 
   def fetch_google_calendar_client
     client = Google::Apis::CalendarV3::CalendarService.new
@@ -93,38 +97,38 @@ class GoogleCalendar
     response.calendars['primary'].busy
   end
 
-  def get_free_time_slot(task_duration, buffer = 10)
+  def get_free_time_slot(task_duration, buffer = 10, day_start = 9, day_end = 21)
     busy_times = fetch_busy_times
     # If no busy times, add task one hour from now
     return { start: (Time.now + 3600), end: (Time.now + 3600 + (task_duration * 60)) } if busy_times.empty?
 
     busy_times.each_with_index do |busy_time, index|
-      slot_start = get_slot_start(busy_time, buffer, task_duration, index)
-      next_index = busy_times[index.next] ? index.next : index
-      # If last event use that event's end (slot_start) to schedule the next event
-      slot_end = if next_index == index
-                   slot_start.advance(minutes: task_duration)
-                 else
-                   get_slot_end(busy_times[next_index], buffer, task_duration)
-                 end
-      # Check that the task can fit in the alloted time slot
-      if slot_start <= slot_end
+      slot_start = get_slot_start(busy_times, busy_time, buffer, task_duration)
+      slot_end = get_slot_end(busy_times, buffer, task_duration, slot_start, index)
+      # Check that the task can fit in the alloted time slot and that it would be scheduled within the set active period
+      if slot_start <= slot_end && slot_start.localtime.hour >= day_start && slot_start.advance(minutes: task_duration).localtime.hour < day_end
         return { start: slot_start,
                  end: slot_start.advance(minutes: task_duration) }
       end
     end
   end
 
-  def get_slot_start(busy_time, buffer, task_duration, index)
-    if DateTime.current.advance(minutes: 60 + task_duration) < busy_time.start && index.zero?
-      DateTime.current.advance(minutes: 60)
+  def get_slot_start(busy_times, busy_time, buffer, task_duration)
+    is_first_busy_slot = busy_time == busy_times.first
+    one_hour_from_now = DateTime.current.advance(minutes: 60)
+    if is_first_busy_slot && one_hour_from_now.advance(minutes: task_duration) < busy_time.start
+      one_hour_from_now
     else
       busy_time.end.advance(minutes: buffer)
     end
   end
 
-  def get_slot_end(busy_time, buffer, task_duration)
-    busy_time.start.advance(minutes: -buffer - task_duration)
+  def get_slot_end(busy_times, buffer, task_duration, slot_start, index)
+    # If last/only event use that event's end (slot_start) to schedule the next event
+    next_index = busy_times[index.next] ? index.next : index
+    return slot_start.advance(minutes: task_duration) if next_index == index
+
+    busy_times[next_index].start.advance(minutes: -buffer - task_duration)
   end
 
   def fetch_calendar_events
