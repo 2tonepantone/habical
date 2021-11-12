@@ -93,7 +93,7 @@ class GoogleCalendar
     response.calendars['primary'].busy
   end
 
-  def get_free_time_slot(task_duration, buffer = 10)
+  def get_free_time_slot(task_duration, buffer = 10, day_start = 9, day_end = 21)
     busy_times = fetch_busy_times
     # If no busy times, add task one hour from now
     return { start: (Time.now + 3600), end: (Time.now + 3600 + (task_duration * 60)) } if busy_times.empty?
@@ -107,8 +107,8 @@ class GoogleCalendar
                  else
                    get_slot_end(busy_times[next_index], buffer, task_duration)
                  end
-      # Check that the task can fit in the alloted time slot
-      if slot_start <= slot_end
+      # Check that the task can fit in the alloted time slot and that it would be scheduled within the set active period
+      if slot_start <= slot_end && slot_start.localtime.hour >= day_start && slot_start.advance(minutes: task_duration).localtime.hour < day_end
         return { start: slot_start,
                  end: slot_start.advance(minutes: task_duration) }
       end
