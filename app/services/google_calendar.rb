@@ -85,11 +85,11 @@ class GoogleCalendar
     client
   end
 
-  def fetch_busy_times
+  def fetch_busy_times(time_min = Time.now.iso8601, time_max = Time.now.advance(days: 7).iso8601)
     body = Google::Apis::CalendarV3::FreeBusyRequest.new
     body.items = ["id": 'primary']
-    body.time_min = Time.now.iso8601
-    body.time_max = (Time.now + 7 * 86_400).iso8601
+    body.time_min = time_min
+    body.time_max = time_max
 
     service = Google::Apis::CalendarV3::CalendarService.new
     service.authorization = @client.authorization
@@ -98,15 +98,20 @@ class GoogleCalendar
   end
 
   def get_free_time_slot(task_duration, buffer = 10, day_start = 9, day_end = 21)
-    busy_times = fetch_busy_times
+    day_start = Time.now.change(hour: day_start)
+    day_end = Time.now.change(hour: day_end)
+    busy_times = fetch_busy_times(day_start.iso8601, day_end.iso8601)
     # If no busy times, add task one hour from now
-    return { start: (Time.now + 3600), end: (Time.now + 3600 + (task_duration * 60)) } if busy_times.empty?
+    if busy_times.empty?
+      return { start: Time.now.advance(hours: 1),
+               end: Time.now.advance(minutes: 60 + task_duration) }
+    end
 
     busy_times.each_with_index do |busy_time, index|
       slot_start = get_slot_start(busy_times, busy_time, buffer, task_duration)
       slot_end = get_slot_end(busy_times, buffer, task_duration, slot_start, index)
       # Check that the task can fit in the alloted time slot and that it would be scheduled within the set active period
-      if slot_start <= slot_end && slot_start.localtime.hour >= day_start && slot_start.advance(minutes: task_duration).localtime.hour < day_end
+      if slot_start <= slot_end && slot_start.localtime >= day_start && slot_start.advance(minutes: task_duration).localtime <= day_end
         return { start: slot_start,
                  end: slot_start.advance(minutes: task_duration) }
       end
