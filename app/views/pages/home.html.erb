@@ -10,8 +10,8 @@
         <p class="lead text-muted">
           Let us worry about scheduling while you go out and accomplish new things.
         </p>
-        <%= link_to "Get started now", user_google_oauth2_omniauth_authorize_path,
-            method: :post, class: "btn btn-outline-primary" %>
+        <%= button_to "Get started now", user_google_oauth2_omniauth_authorize_path,
+            method: :post, class: "btn btn-outline-primary", form: {"data-turbo" => "false"} %>
       </p>
     </div>
   </div>
