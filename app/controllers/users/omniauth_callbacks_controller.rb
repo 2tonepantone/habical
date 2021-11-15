@@ -7,7 +7,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       @user.access_token = auth.credentials.token
       @user.expires_at = auth.credentials.expires_at
       @user.refresh_token = auth.credentials.refresh_token
-      @user.schedule = Schedule.new unless @user.schedule
       @user.save!
       sign_in(@user)
       redirect_to tasks_path

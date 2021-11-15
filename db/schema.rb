@@ -10,24 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_19_093701) do
+ActiveRecord::Schema.define(version: 2021_10_13_071926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "busy_blocks", force: :cascade do |t|
-    t.datetime "start_date"
-    t.datetime "end_date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "schedules", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_schedules_on_user_id"
-  end
 
   create_table "tasks", force: :cascade do |t|
     t.string "title"
@@ -56,6 +42,5 @@ ActiveRecord::Schema.define(version: 2021_10_19_093701) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "schedules", "users"
   add_foreign_key "tasks", "users"
 end
