@@ -19,8 +19,8 @@
         </div>
       </div>
     <% else %>
-      <%= link_to "Login", user_google_oauth2_omniauth_authorize_path,
-          method: :post, class: "btn btn-outline-primary btn-sm" %>
+      <%= button_to "Login", user_google_oauth2_omniauth_authorize_path,
+            method: :post, class: "btn btn-outline-primary", form: {"data-turbo" => "false"} %>
     <% end %>
   </div>
 </nav>
