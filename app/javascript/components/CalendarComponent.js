@@ -1,19 +1,18 @@
 import React from "react";
+import PropTypes from 'prop-types'
 import Calendar from "@ericz1803/react-google-calendar";
 
 //put your google calendar api key here
-const API_KEY = "";
+// const API_KEY = "";
 
 //replace calendar id with one you want to test
 
-let calendars = [
-  { calendarId: "09opmkrjova8h5k5k46fedmo88@group.calendar.google.com" }
-];
+// let calendars = [
+//   { calendarId: "09opmkrjova8h5k5k46fedmo88@group.calendar.google.com" }
+// ];
 
-export default function CalendarComponent() {
-  return (
+const CalendarComponent = (props) => (
     <div className="Calendar">
-      <body>
         <div
           style={{
             width: "90%",
@@ -23,9 +22,9 @@ export default function CalendarComponent() {
             maxWidth: "1200px"
           }}
         >
-          <Calendar apiKey={API_KEY} calendars={calendars} />
+          <Calendar apiKey={props.apiKey} calendars={[props.calendars]} />
         </div>
-      </body>
     </div>
-  );
-}
+  )
+
+export default CalendarComponent

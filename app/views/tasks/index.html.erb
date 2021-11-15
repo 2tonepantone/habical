@@ -1,5 +1,10 @@
 <section>
-  <%= react_component("CalendarComponent") %>
+  <%= react_component("CalendarComponent",
+      {
+        apiKey: ENV['GOOGLE_CALENDAR_API'],
+        calendars: { calendarId: 'rg4m0k607609r2jmdr97sjvjus@group.calendar.google.com' }
+      })
+  %>
   <h5>Next 10 events</h5>
   <table class="">
     <thead>
