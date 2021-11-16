@@ -5,6 +5,8 @@
     "@babel/preset-react": "^7.16.0",
     "@emotion/react": "^11.6.0",
     "@ericz1803/react-google-calendar": "^4.2.1",
+    "@fullcalendar/daygrid": "^5.10.1",
+    "@fullcalendar/react": "^5.10.1",
     "@popperjs/core": "^2.10.2",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
