@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react"
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
-const WeekCalendar = () =>  {
+const WeekCalendar = (props) =>  {
   const SCOPES = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar";
-  const CLIENT_ID = "1048768792731-7d427rmnotmgu3l84ildgd144vp3tq7e.apps.googleusercontent.com"
-  const API_KEY = "AIzaSyDLR3W3w8LQuhdl15eLRPdoQtyWdeB8sBA"
+  const CLIENT_ID = props.clientId
+  const API_KEY = props.apiKey
   const TIME_MIN = (new Date()).toISOString()
 
   const [events, setEvents] = useState(null);
@@ -48,7 +48,8 @@ const WeekCalendar = () =>  {
     } else {
       // Get events if access token is found without sign in popup
       fetch(
-        `https://www.googleapis.com/calendar/v3/calendars/primary/events?key=${API_KEY}&orderBy=startTime&singleEvents=true&timeMin=${TIME_MIN}`,
+        `https://www.googleapis.com/calendar/v3/calendars/primary/events?
+        key=${API_KEY}&orderBy=startTime&singleEvents=true&timeMin=${TIME_MIN}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -78,9 +79,11 @@ const WeekCalendar = () =>  {
     window.gapi.client.calendar.events
       .list({
         // Fetch events from user's primary calendar
-        calendarId: "primary",
-        showDeleted: true,
+        calendarId: 'primary',
+        timeMin: TIME_MIN,
+        showDeleted: false,
         singleEvents: true,
+        orderBy: 'startTime'
       })
       .then(function (response) {
         let events = response.result.items;
