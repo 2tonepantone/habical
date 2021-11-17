@@ -6,7 +6,7 @@ const WeekCalendar = (props) =>  {
   const SCOPES = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar";
   const CLIENT_ID = props.clientId
   const API_KEY = props.apiKey
-  const TIME_MIN = (new Date()).toISOString()
+  const TIME_MIN = getLastSundayMidnight(new Date())
 
   const [events, setEvents] = useState(null);
 
@@ -73,6 +73,11 @@ const WeekCalendar = (props) =>  {
         });
     }
   };
+
+  function getLastSundayMidnight(today) {
+    today.setDate(today.getDate() - today.getDay());
+    return new Date(today.setHours(0, 0, 0, 0)).toISOString();
+  }
 
   const listUpcomingEvents = () => {
     console.log("hello from listUpcomingEvents");
