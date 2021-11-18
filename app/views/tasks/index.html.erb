@@ -1,5 +1,5 @@
 <section>
-  <%= react_component("WeekCalendar") %>
+  <%= react_component("WeekCalendar", clientId: ENV['GOOGLE_CLIENT_ID'], apiKey: ENV['GOOGLE_CALENDAR_API']) %>
   <h5>Next 10 events</h5>
   <table class="">
     <thead>
