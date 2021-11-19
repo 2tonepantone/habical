@@ -1,5 +1,10 @@
 <section>
-  <%= react_component("WeekCalendar", clientId: ENV['GOOGLE_CLIENT_ID'], apiKey: ENV['GOOGLE_CALENDAR_API']) %>
+  <div class="container">
+    <div class="row">
+      <%= react_component("WeekCalendar", {clientId: ENV['GOOGLE_CLIENT_ID'], apiKey: ENV['GOOGLE_CALENDAR_API']}, class: "col-8") %>
+      <%= react_component("NewTaskForm", {}, class: "col-4") %>
+    </div>
+  </div>
   <h5>Next 10 events</h5>
   <table class="">
     <thead>
