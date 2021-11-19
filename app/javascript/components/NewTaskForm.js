@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-export default function NewTaskForm() {
+export default function NewTaskForm(props) {
   const [formData, setFormData] = useState(
     {
       taskName: "",
@@ -69,6 +69,7 @@ export default function NewTaskForm() {
             <option value="7">7</option>
           </select>
         </div>
+        <input type='hidden' name="authenticity_token" value={props.authenticityToken} />
         <button>Submit</button>
       </form>
   )
