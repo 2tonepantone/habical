@@ -70,7 +70,7 @@ export default function NewTaskForm(props) {
           </select>
         </div>
         <input type='hidden' name="authenticity_token" value={props.authenticityToken} />
-        <button>Submit</button>
+        <button type="submit" className="btn btn-outline-primary">Submit</button>
       </form>
   )
 }
