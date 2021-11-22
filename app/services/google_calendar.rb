@@ -112,7 +112,7 @@ class GoogleCalendar
         slot_start = get_slot_start(busy_times, busy_time, buffer, task_duration)
         slot_end = get_slot_end(busy_times, buffer, task_duration, slot_start, index)
         # Check that the task can fit in the alloted time slot and that it would be scheduled within the set active period
-        unless slot_start <= slot_end && slot_start.localtime >= day_start && slot_start.advance(minutes: task_duration).localtime <= day_end
+        unless Time.now < slot_start && slot_start <= slot_end && slot_start.localtime >= day_start && slot_start.advance(minutes: task_duration).localtime <= day_end
           next
         end
 
