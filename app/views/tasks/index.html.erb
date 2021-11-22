@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <%= react_component("WeekCalendar", {clientId: ENV['GOOGLE_CLIENT_ID'], apiKey: ENV['GOOGLE_CALENDAR_API']}, class: "col-8") %>
-      <%= react_component("NewTaskForm", {authenticityToken: form_authenticity_token}, class: "col-4") %>
+      <%= react_component("NewTaskForm", {authenticityToken: form_authenticity_token}, class: "col-4 align-self-center") %>
     </div>
   </div>
   <h5>Next 10 events</h5>

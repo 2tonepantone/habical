@@ -26,6 +26,7 @@ export default function NewTaskForm(props) {
 
   return (
       <form onSubmit={handleSubmit}>
+        <h1 className="fw-light">Add a new task to your calendar</h1>
         <div className="form-group">
           <label htmlFor="taskName">Task Name:</label>
           <input
