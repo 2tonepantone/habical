@@ -1,19 +1,23 @@
 <main>
   <section class="py-5 container">
     <div class="row">
-      <div class="col-lg-8 mx-auto">
-        <%= render "shared/hourly_calendar" %>
-      </div>
-      <div class="col-lg-4 ps-5">
-        <%= image_tag("landing_gardening") %>
-        <h1 class="fw-light">Habit timing that fits your schedule</h1>
-        <p class="lead text-muted">
-          Let us worry about scheduling while you go out and accomplish new things.
-        </p>
-        <%= button_to "Get started now", user_google_oauth2_omniauth_authorize_path,
+      <% if user_signed_in? %>
+        <%= react_component("WeekCalendar", {clientId: ENV['GOOGLE_CLIENT_ID'], apiKey: ENV['GOOGLE_CALENDAR_API']}, class: "col-8") %>
+        <%= react_component("NewTaskForm", {authenticityToken: form_authenticity_token}, class: "col-4 align-self-center") %>
+      <% else %>
+        <div class="col-lg-8 mx-auto">
+          <%= render "shared/hourly_calendar" %>
+        </div>
+        <div class="col-lg-4 ps-5">
+          <%= image_tag("landing_gardening") %>
+          <h1 class="fw-light">Habit timing that fits your schedule</h1>
+          <p class="lead text-muted">
+            Let us worry about scheduling while you go out and accomplish new things.
+          </p>
+          <%= button_to "Get started now", user_google_oauth2_omniauth_authorize_path,
             method: :post, class: "btn btn-outline-primary", form: {"data-turbo" => "false"} %>
-      </p>
+        </div>
+      <% end %>
     </div>
-  </div>
-</section>
+  </section>
 </main>
