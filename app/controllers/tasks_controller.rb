@@ -8,10 +8,6 @@ class TasksController < ApplicationController
     @tasks = Task.all
   end
 
-  def new
-    @task = Task.new
-  end
-
   def create
     @task = Task.new(task_params)
     @task.user_id = current_user.id
@@ -21,9 +17,8 @@ class TasksController < ApplicationController
       flash[:notice] = 'Task was successfully added.'
       redirect_to tasks_path
     else
-      redirect_to new_task_path(@task), alert: "
-        Cannot add task. #{@task.errors.full_messages.join(', ')}.
-      "
+      redirect_to tasks_path(@task), alert:
+        "Cannot add task. #{@task.errors.full_messages.join(', ')}."
     end
   end
 

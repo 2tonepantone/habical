@@ -109,21 +109,11 @@ const WeekCalendar = (props) =>  {
 
   return (
     console.log(events),
-    <div
-      style={{
-        width: "90%",
-        paddingTop: "50px",
-        paddingBottom: "50px",
-        margin: "auto",
-        maxWidth: "1200px"
-      }}
-    >
-      <FullCalendar
-        plugins={[dayGridPlugin]}
-        initialView="dayGridWeek"
-        events={events}
-      />
-    </div>
+    <FullCalendar
+      plugins={[dayGridPlugin]}
+      initialView="dayGridWeek"
+      events={events}
+    />
   );
 }
 
