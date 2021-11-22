@@ -3,8 +3,8 @@ import React, { useState } from "react"
 export default function NewTaskForm(props) {
   const [formData, setFormData] = useState(
     {
-      title: "",
-      duration: 10
+      "task[title]": "",
+      "task[duration]": 10
     }
   )
 
@@ -40,7 +40,7 @@ export default function NewTaskForm(props) {
             onChange={handleChange}
             name="task[title]"
             id="task_title"
-            // value={task[title]}
+            value={formData["task[title]"]}
             className="form-control"
           />
         </div>
@@ -55,7 +55,7 @@ export default function NewTaskForm(props) {
             step="5"
             min="5"
             max="180"
-            // value={task[duration]}
+            value={formData["task[duration]"]}
             className="form-control"
           />
         </div>
