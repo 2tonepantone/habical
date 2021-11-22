@@ -3,9 +3,8 @@ import React, { useState } from "react"
 export default function NewTaskForm(props) {
   const [formData, setFormData] = useState(
     {
-      taskName: "",
-      duration: 10,
-      weeklyFrequency: 1
+      title: "",
+      duration: 10
     }
   )
 
@@ -20,21 +19,28 @@ export default function NewTaskForm(props) {
   }
 
   function handleSubmit(event) {
-    event.preventDefault()
+    // event.preventDefault()
     console.log(formData)
   }
 
   return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}
+        role='form'
+        acceptCharset="UTF-8"
+        action="/tasks"
+        method="post"
+      >
+        <input type='hidden' name="authenticity_token" value={props.authenticityToken}/>
         <h1 className="fw-light">Add a new task to your calendar</h1>
         <div className="form-group">
-          <label htmlFor="taskName">Task Name:</label>
+          <label htmlFor="task_title">Task Name:</label>
           <input
             type="text"
             placeholder="Do yoga"
             onChange={handleChange}
-            name="taskName"
-            value={formData.taskName}
+            name="task[title]"
+            id="task_title"
+            // value={task[title]}
             className="form-control"
           />
         </div>
@@ -44,34 +50,16 @@ export default function NewTaskForm(props) {
             type="number"
             placeholder="10"
             onChange={handleChange}
-            name="duration"
+            name="task[duration]"
+            id="task_duration"
             step="5"
             min="5"
             max="180"
-            value={formData.duration}
+            // value={task[duration]}
             className="form-control"
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="weeklyFrequency">Weekly Frequency:</label>
-          <select
-            id="weeklyFrequency"
-            value={formData.weeklyFrequency}
-            onChange={handleChange}
-            name="weeklyFrequency"
-            className="form-control"
-          >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-          </select>
-        </div>
-        <input type='hidden' name="authenticity_token" value={props.authenticityToken} />
-        <button type="submit" className="btn btn-outline-primary">Submit</button>
+        <input type="submit" name="commit" value="Create Task" data-disable-with="Create Task" className="btn btn-outline-primary"/>
       </form>
   )
 }
