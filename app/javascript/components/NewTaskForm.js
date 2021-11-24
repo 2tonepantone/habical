@@ -42,6 +42,7 @@ export default function NewTaskForm(props) {
             id="task_title"
             value={formData["task[title]"]}
             className="form-control"
+            required
           />
         </div>
         <div className="form-group">
@@ -57,6 +58,7 @@ export default function NewTaskForm(props) {
             max="180"
             value={formData["task[duration]"]}
             className="form-control"
+            required
           />
         </div>
         <input type="submit" name="commit" value="Create Task" data-disable-with="Create Task" className="btn btn-outline-primary"/>

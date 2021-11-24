@@ -15,9 +15,9 @@ class TasksController < ApplicationController
       task = params[:task]
       @gcal.add_event(task)
       flash[:notice] = 'Task was successfully added.'
-      redirect_to tasks_path
+      redirect_to root_path
     else
-      redirect_to tasks_path(@task), alert:
+      redirect_to root_path(@task), alert:
         "Cannot add task. #{@task.errors.full_messages.join(', ')}."
     end
   end
