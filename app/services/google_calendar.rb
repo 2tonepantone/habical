@@ -102,7 +102,7 @@ class GoogleCalendar
     day_end = Time.now.change(hour: day_end)
     searching = true
     while searching
-      busy_times = fetch_busy_times(day_start.iso8601, day_end.iso8601)
+      busy_times = fetch_busy_times(day_start.today? ? Time.now : day_start.iso8601, day_end.iso8601)
       if busy_times.empty?
         searching = false
         return handle_empty_schedule(day_start, task_duration)
@@ -126,6 +126,7 @@ class GoogleCalendar
   def valid_start_time?(slot_start, slot_end, day_start, day_end, task_duration)
     Time.now < slot_start && slot_start <= slot_end && slot_start.localtime >= day_start &&
       slot_start.advance(minutes: task_duration).localtime <= day_end
+      binding.byebug
   end
 
   def get_slot_start(busy_times, busy_time, buffer, task_duration)
