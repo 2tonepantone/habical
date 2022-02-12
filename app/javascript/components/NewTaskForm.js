@@ -63,7 +63,7 @@ export default function NewTaskForm(props) {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="task_frequency">Frequency (this week):</label>
+          <label htmlFor="task_frequency">Frequency (next seven days):</label>
           <select
             onChange={handleChange}
             name="task[frequency]"
