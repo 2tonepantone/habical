@@ -7,6 +7,7 @@ class GoogleCalendar
   def initialize(current_user)
     @current_user = current_user
     @client = fetch_google_calendar_client
+    @skipped_days = 0
   end
 
   def call
@@ -98,8 +99,8 @@ class GoogleCalendar
   end
 
   def get_free_time_slot(task_duration, repetition, buffer = 10, day_start = 9, day_end = 21)
-    day_start = Time.now.change(hour: day_start).advance(days: repetition)
-    day_end = Time.now.change(hour: day_end).advance(days: repetition)
+    day_start = Time.now.change(hour: day_start).advance(days: repetition + @skipped_days)
+    day_end = Time.now.change(hour: day_end).advance(days: repetition + @skipped_days)
     searching = true
     while searching
       busy_times = fetch_busy_times(day_start.today? ? Time.now.iso8601 : day_start.iso8601, day_end.iso8601)
@@ -120,6 +121,7 @@ class GoogleCalendar
       end
       day_start = day_start.advance(days: 1)
       day_end = day_end.advance(days: 1)
+      @skipped_days += 1
     end
   end
 
