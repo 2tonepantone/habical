@@ -13,8 +13,8 @@ class GoogleCalendar
     { busy_times: fetch_busy_times, calendar_events: fetch_calendar_events }
   end
 
-  def add_event(task)
-    free_slot = get_free_time_slot(task[:duration].to_i)
+  def add_event(task, repetition)
+    free_slot = get_free_time_slot(task[:duration].to_i, repetition)
     event = get_event(task, free_slot)
     @client.insert_event('primary', event)
   end
@@ -97,9 +97,9 @@ class GoogleCalendar
     response.calendars['primary'].busy
   end
 
-  def get_free_time_slot(task_duration, buffer = 10, day_start = 9, day_end = 21)
-    day_start = Time.now.change(hour: day_start)
-    day_end = Time.now.change(hour: day_end)
+  def get_free_time_slot(task_duration, repetition, buffer = 10, day_start = 9, day_end = 21)
+    day_start = Time.now.change(hour: day_start).advance(days: repetition)
+    day_end = Time.now.change(hour: day_end).advance(days: repetition)
     searching = true
     while searching
       busy_times = fetch_busy_times(day_start.today? ? Time.now.iso8601 : day_start.iso8601, day_end.iso8601)
@@ -112,7 +112,7 @@ class GoogleCalendar
         slot_start = get_slot_start(busy_times, busy_time, buffer, task_duration)
         slot_end = get_slot_end(busy_times, buffer, task_duration, slot_start, index)
         # Check that the task can fit in the alloted time slot and that it would be scheduled within the set active period
-        next unless valid_start_time?(slot_start, slot_end, day_start, day_end, task_duration)
+        next unless valid_time_slot?(slot_start, slot_end, day_start, day_end, task_duration)
 
         searching = false
         return { start: slot_start,
@@ -123,7 +123,7 @@ class GoogleCalendar
     end
   end
 
-  def valid_start_time?(slot_start, slot_end, day_start, day_end, task_duration)
+  def valid_time_slot?(slot_start, slot_end, day_start, day_end, task_duration)
     Time.now < slot_start && slot_start <= slot_end && slot_start.localtime >= day_start &&
       slot_start.advance(minutes: task_duration).localtime <= day_end
   end

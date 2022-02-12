@@ -13,7 +13,7 @@ class TasksController < ApplicationController
     @task.user_id = current_user.id
     if @task.save
       task = params[:task]
-      @gcal.add_event(task)
+      task[:frequency].to_i.times { |repetition| @gcal.add_event(task, repetition) }
       flash[:notice] = 'Task was successfully added.'
       redirect_to root_path
     else
@@ -33,6 +33,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :duration)
+    params.require(:task).permit(:title, :duration, :frequency)
   end
 end

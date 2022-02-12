@@ -4,7 +4,8 @@ export default function NewTaskForm(props) {
   const [formData, setFormData] = useState(
     {
       "task[title]": "",
-      "task[duration]": 10
+      "task[duration]": 10,
+      "task[frequency]": 1
     }
   )
 
@@ -46,7 +47,7 @@ export default function NewTaskForm(props) {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="duration">Duration:</label>
+          <label htmlFor="task_duration">Duration (minutes):</label>
           <input
             type="number"
             placeholder="10"
@@ -60,6 +61,25 @@ export default function NewTaskForm(props) {
             className="form-control"
             required
           />
+        </div>
+        <div className="form-group">
+          <label htmlFor="task_frequency">Frequency (next seven days):</label>
+          <select
+            onChange={handleChange}
+            name="task[frequency]"
+            id="task_frequency"
+            value={formData["task[frequency]"]}
+            className="form-control"
+            required
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
         </div>
         <input type="submit" name="commit" value="Create Task" data-disable-with="Create Task" className="btn btn-outline-primary"/>
       </form>
