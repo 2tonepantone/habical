@@ -102,7 +102,7 @@ class GoogleCalendar
     day_end = Time.now.change(hour: day_end)
     searching = true
     while searching
-      busy_times = fetch_busy_times(day_start.iso8601, day_end.iso8601)
+      busy_times = fetch_busy_times(day_start.today? ? Time.now.iso8601 : day_start.iso8601, day_end.iso8601)
       if busy_times.empty?
         searching = false
         return handle_empty_schedule(day_start, task_duration)
