@@ -13,8 +13,8 @@ class GoogleCalendar
     { busy_times: fetch_busy_times, calendar_events: fetch_calendar_events }
   end
 
-  def add_event(task, freq_num)
-    free_slot = get_free_time_slot(task[:duration].to_i, freq_num)
+  def add_event(task, repetition)
+    free_slot = get_free_time_slot(task[:duration].to_i, repetition)
     event = get_event(task, free_slot)
     @client.insert_event('primary', event)
   end
@@ -97,9 +97,9 @@ class GoogleCalendar
     response.calendars['primary'].busy
   end
 
-  def get_free_time_slot(task_duration, freq_num, buffer = 10, day_start = 9, day_end = 21)
-    day_start = Time.now.change(hour: day_start).advance(days: freq_num)
-    day_end = Time.now.change(hour: day_end).advance(days: freq_num)
+  def get_free_time_slot(task_duration, repetition, buffer = 10, day_start = 9, day_end = 21)
+    day_start = Time.now.change(hour: day_start).advance(days: repetition)
+    day_end = Time.now.change(hour: day_end).advance(days: repetition)
     searching = true
     while searching
       busy_times = fetch_busy_times(day_start.today? ? Time.now.iso8601 : day_start.iso8601, day_end.iso8601)
