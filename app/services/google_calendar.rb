@@ -103,7 +103,7 @@ class GoogleCalendar
     day_end = Time.now.change(hour: day_end).advance(days: repetition + @skipped_days)
     searching = true
     while searching
-      busy_times = day_start.today? ? fetch_busy_times(Time.now.iso8601, day_end.iso8601) : fetch_busy_times(day_start.iso8601, day_end.iso8601)
+      busy_times = day_start.today? ? fetch_busy_times(Time.now.iso8601) : fetch_busy_times(day_start.iso8601, day_end.iso8601)
       if busy_times.empty?
         time_slot = handle_empty_schedule(day_start, task_duration)
         next unless valid_time_slot?(time_slot[:start], time_slot[:end], day_start, day_end, task_duration)
