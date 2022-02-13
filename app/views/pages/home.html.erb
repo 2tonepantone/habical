@@ -2,7 +2,7 @@
   <section class="py-5 container">
     <div class="row">
       <% if user_signed_in? %>
-        <%= react_component("WeekCalendar", {clientId: ENV['GOOGLE_CLIENT_ID'], apiKey: ENV['GOOGLE_CALENDAR_API']}, class: "col-8") %>
+        <%= react_component("WeekCalendar", {events: @events}, class: "col-8") %>
         <%= react_component("NewTaskForm", {authenticityToken: form_authenticity_token}, class: "col-4 align-self-center") %>
       <% else %>
         <div class="col-lg-8 mx-auto">
