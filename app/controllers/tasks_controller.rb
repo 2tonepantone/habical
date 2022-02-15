@@ -1,8 +1,13 @@
 class TasksController < ApplicationController
-  before_action :fetch_gcal, only: %i[index create]
-  before_action :fetch_schedule, only: %i[index create]
+  skip_before_action :authenticate_user!, only: :index
+  before_action :fetch_gcal, only: :create
+  before_action :fetch_schedule, only: :create
 
   def index
+    return unless user_signed_in?
+
+    fetch_gcal
+    fetch_schedule
     @events = @schedule[:calendar_events]
     @busy_times = @schedule[:busy_times]
     @tasks = Task.all
