@@ -6,11 +6,15 @@ class TasksController < ApplicationController
   def index
     return unless user_signed_in?
 
-    fetch_gcal
-    fetch_schedule
-    @events = @schedule[:calendar_events]
-    @busy_times = @schedule[:busy_times]
-    @tasks = Task.all
+    begin
+      fetch_gcal
+      fetch_schedule
+      @events = @schedule[:calendar_events]
+      @busy_times = @schedule[:busy_times]
+    rescue Google::Apis::AuthorizationError
+      sign_out :user
+      flash[:alert] = 'Your session has expired. Please login again.'
+    end
   end
 
   def create
