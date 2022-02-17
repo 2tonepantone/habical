@@ -165,9 +165,9 @@ class GoogleCalendar
 
   def fetch_calendar_events
     @events = @client.list_events(CALENDAR_ID,
-                                  max_results: 10,
                                   single_events: true,
                                   order_by: 'startTime',
-                                  time_min: Time.now.iso8601)
+                                  time_min: Time.parse(Date.today.beginning_of_month.to_s).iso8601,
+                                  time_max: Time.parse(Date.today.next_month.end_of_month.to_s).iso8601)
   end
 end
