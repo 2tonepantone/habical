@@ -1,0 +1,10 @@
+.alert {
+  position: fixed;
+  top: 70px;
+  right: 4px;
+
+  animation: fadeOutRight;
+  animation-duration: 5s;
+  animation-delay: 5s;
+  animation-fill-mode: both;
+}
