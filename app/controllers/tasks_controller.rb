@@ -20,14 +20,16 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @task.user_id = current_user.id
-    if @task.save
+    return unless @task.save
+
+    begin
       task = params[:task]
       task[:frequency].to_i.times { |repetition| @gcal.add_event(task, repetition) }
       flash[:notice] = 'Task was successfully added.'
       redirect_to root_path
-    else
-      redirect_to root_path(@task), alert:
-        "Cannot add task. #{@task.errors.full_messages.join(', ')}."
+    rescue Google::Apis::AuthorizationError
+      sign_out :user
+      flash[:alert] = 'Your session has expired. Please login again.'
     end
   end
 
