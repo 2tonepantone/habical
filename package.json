@@ -2,7 +2,7 @@
   "name": "habical",
   "private": true,
   "dependencies": {
-    "@babel/preset-react": "^7.16.0",
+    "@babel/preset-react": "^7.16.7",
     "@fullcalendar/bootstrap5": "^5.10.2",
     "@fullcalendar/core": "^5.10.1",
     "@fullcalendar/daygrid": "^5.10.1",
@@ -10,7 +10,7 @@
     "@fullcalendar/list": "^5.10.1",
     "@fullcalendar/react": "^5.10.1",
     "@fullcalendar/timegrid": "^5.10.1",
-    "@popperjs/core": "^2.10.2",
+    "@popperjs/core": "^2.11.2",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
@@ -21,7 +21,7 @@
     "bootstrap-icons": "^1.8.1",
     "jquery": "^3.6.0",
     "popper.js": "^1.16.1",
-    "prop-types": "^15.7.2",
+    "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react_ujs": "^2.6.1",
@@ -31,6 +31,6 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "webpack-dev-server": "^3"
+    "webpack-dev-server": "^3.11.3"
   }
 }
