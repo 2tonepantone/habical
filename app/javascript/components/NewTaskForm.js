@@ -31,6 +31,7 @@ export default function NewTaskForm(props) {
         method="post"
       >
         <input type='hidden' name="authenticity_token" value={props.authenticityToken}/>
+        <input type='hidden' name="task[timezone]" value={Intl.DateTimeFormat().resolvedOptions().timeZone}/>
         <h1 className="fw-light">Add a new task to your calendar</h1>
         <div className="form-group">
           <label htmlFor="task_title">Task Name:</label>
