@@ -29,6 +29,7 @@ class TasksController < ApplicationController
       redirect_to root_path
     rescue Google::Apis::AuthorizationError
       sign_out :user
+      redirect_to root_path
       flash[:alert] = 'Your session has expired. Please login again.'
     end
   end
@@ -44,6 +45,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :duration, :frequency)
+    params.require(:task).permit(:title, :duration, :frequency, :timezone)
   end
 end
