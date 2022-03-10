@@ -5,7 +5,7 @@ export default function NewTaskForm(props) {
     {
       "task[title]": "",
       "task[duration]": 10,
-      "task[frequency]": 1
+      "task[frequency]": 1,
     }
   )
 
@@ -20,7 +20,6 @@ export default function NewTaskForm(props) {
   }
 
   function handleSubmit(event) {
-    // event.preventDefault()
     console.log(formData)
   }
 
