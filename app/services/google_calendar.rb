@@ -15,7 +15,7 @@ class GoogleCalendar
   end
 
   def add_event(task, repetition)
-    free_slot = get_free_time_slot(task[:duration].to_i, repetition)
+    free_slot = get_free_time_slot(task[:duration].to_i, repetition, task[:timezone])
     event = get_event(task, free_slot)
     @client.insert_event('primary', event)
   end
@@ -98,9 +98,10 @@ class GoogleCalendar
     response.calendars['primary'].busy
   end
 
-  def get_free_time_slot(task_duration, repetition, buffer = 10, day_start = 9, day_end = 21)
-    day_start = Time.now.change(hour: day_start).advance(days: repetition + @skipped_days).utc
-    day_end = Time.now.change(hour: day_end).advance(days: repetition + @skipped_days).utc
+  def get_free_time_slot(task_duration, repetition, timezone, buffer = 10, day_start = 9, day_end = 21)
+    Time.zone = (timezone)
+    day_start = Time.current.change(hour: day_start).advance(days: repetition + @skipped_days).utc
+    day_end = Time.current.change(hour: day_end).advance(days: repetition + @skipped_days).utc
     searching = true
     while searching
       busy_times = day_start.today? ? fetch_busy_times(Time.now.iso8601, Time.now.change(hour: 24).iso8601) : fetch_busy_times(day_start.iso8601, day_end.iso8601)
