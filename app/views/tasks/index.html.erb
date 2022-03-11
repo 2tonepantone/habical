@@ -1,5 +1,5 @@
 <main>
-  <section class="mt-4 px-sm-5 container-fluid">
+  <section class="mt-4 container-fluid container-md">
     <div class="row">
       <%= react_component("WeekCalendar", {events: @events&.items, user_present: user_signed_in?}, class: "col-sm-8") %>
       <% if user_signed_in? %>
