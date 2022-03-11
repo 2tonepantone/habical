@@ -5,20 +5,23 @@ import listPlugin from '@fullcalendar/list'
 import bootstrap5Plugin from '@fullcalendar/bootstrap5'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import sampleEvents from '../../assets/data/sampleEvents'
 
-const WeekCalendar = ({ events }) =>  {
+const WeekCalendar = ({ events, sample }) =>  {
   const [formattedEvents, setFormattedEvents] = useState(null)
+
+  console.log(sampleEvents)
 
   const formatEvents = (events) => {
     return events.map((event) => ({
-      title: event.summary,
-      start: event.start.date_time || event.start.date,
-      end: event.end.date_time || event.end.date,
+      title: event.summary || event.title,
+      start: event.start.date_time || event.start,
+      end: event.end.date_time || event.end,
     }))
   }
 
   useEffect(() => {
-    setFormattedEvents(formatEvents(events))
+    setFormattedEvents(formatEvents(sample ? sampleEvents : events))
   }, [])
 
   return (
