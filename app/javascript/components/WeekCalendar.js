@@ -25,7 +25,7 @@ const WeekCalendar = ({ events, sample }) =>  {
   return (
     <FullCalendar
       plugins={[dayGridPlugin, timeGridPlugin, listPlugin, bootstrap5Plugin]}
-      initialView={sample ? 'dayGridMonth' : 'listWeek'}
+      initialView='listWeek'
       headerToolbar={{
         left: 'prev,next today',
         center: 'title',
