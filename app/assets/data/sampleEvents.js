@@ -3,8 +3,8 @@ import moment from "moment"
 const sampleEvents =  [
   {
     title: "Japanese Class",
-    start: moment().subtract(1, 'days').add(2, 'hours').format(),
-    end: moment().subtract(1, 'days').add(3, 'hours').format(),
+    start: moment().subtract(1, 'days').add(3, 'hours').format(),
+    end: moment().subtract(1, 'days').add(4, 'hours').format(),
   },
   {
     title: "Meetup w/ Ryan",
@@ -18,13 +18,13 @@ const sampleEvents =  [
   },
   {
     title: "Family Video Chat",
-    start: moment().subtract(4, 'days').add(2, 'hours').format(),
-    end: moment().subtract(4, 'days').add(3, 'hours').format(),
+    start: moment().subtract(4, 'days').add(1, 'hours').format(),
+    end: moment().subtract(4, 'days').add(2, 'hours').format(),
   },
   {
     title: "Water Plants",
-    start: moment().subtract(2, 'days').add(1, 'hours').format(),
-    end: moment().subtract(2, 'days').add(2, 'hours').format(),
+    start: moment().subtract(2, 'days').subtract(5, 'hours').format(),
+    end: moment().subtract(2, 'days').subtract(4, 'hours').format(),
   },
   {
     title: "Shelby's Birthday Party",
@@ -58,8 +58,8 @@ const sampleEvents =  [
   },
   {
     title: "Doctor's Appt",
-    start: moment().subtract(3, 'days').add(3, 'hours').format(),
-    end: moment().subtract(3, 'days').add(4, 'hours').format(),
+    start: moment().subtract(3, 'days').subtract(3, 'hours').format(),
+    end: moment().subtract(3, 'days').subtract(2, 'hours').format(),
   },
   {
     title: "Piano Class",
