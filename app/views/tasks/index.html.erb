@@ -1,13 +1,15 @@
 <main>
-  <section class="py-5 container">
+  <section class="mt-4 container">
     <div class="row">
+      <%= react_component("WeekCalendar", {events: @events&.items, user_present: user_signed_in?}, class: "col-md-8") %>
       <% if user_signed_in? %>
-        <%= react_component("WeekCalendar", {events: @events.items}, class: "col-8") %>
-        <%= react_component("NewTaskForm", {authenticityToken: form_authenticity_token}, class: "col-4 align-self-center") %>
+        <div class="col-md-4 mt-3 mt-md-0 align-self-center">
+          <%= image_tag("logged_in.svg", class: 'd-none d-md-block') %>
+          <%= react_component("NewTaskForm", {authenticityToken: form_authenticity_token}) %>
+        </div>
       <% else %>
-        <%= react_component("WeekCalendar", {sample: true}, class: "col-8") %>
-        <div class="col-lg-4 ps-5">
-          <%= image_tag("landing_yoga.svg") %>
+        <div class="col-md-4 mt-3 mt-md-0 align-self-center">
+          <%= image_tag("landing_yoga.svg", class: 'd-none d-md-block') %>
           <h1 class="fw-light">Habit timing that fits your schedule</h1>
           <p class="lead text-muted">
             Let us worry about scheduling while you go out and accomplish new things.
