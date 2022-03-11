@@ -9,7 +9,6 @@ import sampleEvents from '../../assets/data/sampleEvents'
 
 const WeekCalendar = ({ events, sample }) =>  {
   const [formattedEvents, setFormattedEvents] = useState(null)
-
   console.log(sampleEvents)
 
   const formatEvents = (events) => {
@@ -27,7 +26,7 @@ const WeekCalendar = ({ events, sample }) =>  {
   return (
     <FullCalendar
       plugins={[dayGridPlugin, timeGridPlugin, listPlugin, bootstrap5Plugin]}
-      initialView='listWeek'
+      initialView={sample ? 'dayGridMonth' : 'listWeek'}
       headerToolbar={{
         left: 'prev,next today',
         center: 'title',
