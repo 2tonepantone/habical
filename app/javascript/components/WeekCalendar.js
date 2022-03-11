@@ -9,7 +9,6 @@ import sampleEvents from '../../assets/data/sampleEvents'
 
 const WeekCalendar = ({ events, sample }) =>  {
   const [formattedEvents, setFormattedEvents] = useState(null)
-  console.log(sampleEvents)
 
   const formatEvents = (events) => {
     return events.map((event) => ({
