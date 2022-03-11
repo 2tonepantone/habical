@@ -48,8 +48,8 @@ const sampleEvents =  [
   },
   {
     title: "Amazon Delivery",
-    start: moment().add(2, 'hours').format(),
-    end: moment().add(3, 'hours').format(),
+    start: moment().subtract(1, 'hours').format(),
+    end: moment().format(),
   },
   {
     title: "Gym Time",
