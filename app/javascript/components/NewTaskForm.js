@@ -19,12 +19,8 @@ export default function NewTaskForm(props) {
     })
   }
 
-  function handleSubmit(event) {
-    console.log(formData)
-  }
-
   return (
-      <form onSubmit={handleSubmit}
+      <form
         role='form'
         acceptCharset="UTF-8"
         action="/tasks"
