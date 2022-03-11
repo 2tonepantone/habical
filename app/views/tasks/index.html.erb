@@ -5,9 +5,7 @@
         <%= react_component("WeekCalendar", {events: @events.items}, class: "col-8") %>
         <%= react_component("NewTaskForm", {authenticityToken: form_authenticity_token}, class: "col-4 align-self-center") %>
       <% else %>
-        <div class="col-lg-8 mx-auto">
-          <%= render "shared/hourly_calendar" %>
-        </div>
+        <%= react_component("WeekCalendar", {sample: true}, class: "col-8") %>
         <div class="col-lg-4 ps-5">
           <%= image_tag("landing_gardening.png") %>
           <h1 class="fw-light">Habit timing that fits your schedule</h1>
