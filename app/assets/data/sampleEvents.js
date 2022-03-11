@@ -9,7 +9,7 @@ const sampleEvents =  [
   {
     title: "Meetup w/ Ryan",
     start: moment().add(4, 'days').subtract(2, 'hours').format(),
-    end: moment().add(4, 'days').add(3, 'hours').format(),
+    end: moment().add(4, 'days').add(1, 'hours').format(),
   },
   {
     title: "Jill's Birthday",
@@ -32,8 +32,8 @@ const sampleEvents =  [
     end: moment().add(2, 'days').add(5, 'hours').format(),
   },
   {
-    title: "Car Service",
-    start: moment().add(14, 'days').subtract(2, 'hours').format(),
+    title: "Car Service Appt",
+    start: moment().add(14, 'days').subtract(1, 'hours').format(),
     end: moment().add(14, 'days').add(4, 'hours').format(),
   },
   {
@@ -57,7 +57,7 @@ const sampleEvents =  [
     end: moment().add(10, 'days').add(4, 'hours').format(),
   },
   {
-    title: "Doctor's Appointment",
+    title: "Doctor's Appt",
     start: moment().subtract(3, 'days').add(3, 'hours').format(),
     end: moment().subtract(3, 'days').add(4, 'hours').format(),
   },
@@ -69,10 +69,10 @@ const sampleEvents =  [
   {
     title: "Meetup w/ Terri",
     start: moment().add(11, 'days').subtract(2, 'hours').format(),
-    end: moment().add(11, 'days').add(3, 'hours').format(),
+    end: moment().add(11, 'days').add(1, 'hours').format(),
   },
   {
-    title: "My Birthday!",
+    title: "My Birthday Party!",
     start: moment().add(19, 'days').add(2, 'hours').format(),
     end: moment().add(19, 'days').add(5, 'hours').format(),
   },
@@ -89,12 +89,12 @@ const sampleEvents =  [
   {
     title: "Kickback",
     start: moment().add(16, 'days').subtract(2, 'hours').format(),
-    end: moment().add(16, 'days').add(3, 'hours').format(),
+    end: moment().add(16, 'days').add(2, 'hours').format(),
   },
   {
     title: "Dentist",
     start: moment().add(25, 'days').add(2, 'hours').format(),
-    end: moment().add(25, 'days').add(5, 'hours').format(),
+    end: moment().add(25, 'days').add(3, 'hours').format(),
   },
   {
     title: "Clean House",
