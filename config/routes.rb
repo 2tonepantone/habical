@@ -3,5 +3,6 @@ Rails.application.routes.draw do
                                     sessions: 'users/sessions' }
 
   root to: 'tasks#index'
+  get '/privacy', to: 'pages#privacy'
   resources :tasks, only: [:create]
 end
